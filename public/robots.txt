@@ -1,0 +1,10 @@
+# Stargazer — search indexing controls supplement authentication, never replace it (PRD §19)
+User-agent: *
+Allow: /en
+Allow: /zh-hant
+Disallow: /app
+Disallow: /api
+Disallow: /invite
+Disallow: /dev
+
+Sitemap: /sitemap.xml
