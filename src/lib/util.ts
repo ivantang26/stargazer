@@ -2,10 +2,18 @@ import { createHash, randomBytes, randomUUID, createHmac, timingSafeEqual } from
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-/** Root directory for local state (embedded database, uploaded files, secret). */
+/**
+ * Root directory for local state (embedded database, uploaded files, secret).
+ * Serverless hosts (Vercel) mount a read-only project directory; their one
+ * writable location is /tmp, so state lands there when no explicit directory
+ * is given and the platform is detected. State on such hosts is ephemeral:
+ * set SG_DATA_DIR on a host with a persistent disk for durable data.
+ */
 export const DATA_DIR = process.env.SG_DATA_DIR
   ? path.resolve(process.env.SG_DATA_DIR)
-  : path.join(process.cwd(), ".data");
+  : process.env.VERCEL === "1"
+    ? path.join("/tmp", "stargazer-data")
+    : path.join(process.cwd(), ".data");
 
 export function ensureDataDir(sub?: string): string {
   const dir = sub ? path.join(DATA_DIR, sub) : DATA_DIR;

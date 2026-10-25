@@ -13,6 +13,8 @@ npm start        # http://localhost:3000  → redirects to /en
 
 No external services or API keys are required. All state lives in `.data/` (SQLite database, private file store, server secret) — delete `.data/` for a factory reset.
 
+**Deploying:** on serverless hosts (Vercel) the project directory is read-only, so state is placed under `/tmp` automatically (detected via `VERCEL=1`) and is **ephemeral** — database, uploads, and signups reset when instances recycle. Fine for a demo deployment; for durable data, set `SG_DATA_DIR` on a host with a persistent disk (VPS, Railway, Render, Fly), or port the data-access boundary (`src/lib/data-access.ts`) to a managed database such as Turso/LibSQL — every table already carries `org_id` for that move.
+
 ---
 
 ## The complete first-release journey (try it in 5 minutes)
