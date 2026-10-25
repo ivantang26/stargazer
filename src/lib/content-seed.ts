@@ -22,7 +22,7 @@ const ENTRIES: Entry[] = [
     type: "article",
     title: "Getting started",
     summary: "From creating your workspace to your first sourced answer in one sitting.",
-    body: `## Create your workspace\nSign up with a work email, verify the address, and name your workspace. A fourteen-day trial starts immediately — no payment card is required.\n\n## Upload approved documents\nAn owner or administrator uploads the documents your team already treats as authoritative: policies, product notes, operating procedures. Every active member of the workspace can read them, so upload only material that is safe for the whole team.\n\n## Wait for processing\nDocuments move through uploading, queued, processing, and ready. A document only becomes ready once its content and retrieval index are usable.\n\n## Ask your first question\nOpen Ask, choose which documents to search, and write the question in English or Traditional Chinese. Answers attach citations to factual statements; open a citation to read the passage, its document, version, and section.\n\n## Keep the collection current\nReplace an outdated document with a new version. New questions immediately use the new version, while earlier answers keep their original references.`,
+    body: `## Create your workspace\nSign up with a work email, verify the address, and name your workspace. A fourteen-day trial starts immediately. No payment card is required.\n\n## Upload approved documents\nAn owner or administrator uploads the documents your team already treats as authoritative: policies, product notes, operating procedures. Every active member of the workspace can read them, so upload only material that is safe for the whole team.\n\n## Wait for processing\nDocuments move through uploading, queued, processing, and ready. A document only becomes ready once its content and retrieval index are usable.\n\n## Ask your first question\nOpen Ask, choose which documents to search, and write the question in English or Traditional Chinese. Answers attach citations to factual statements; open a citation to read the passage, its document, version, and section.\n\n## Keep the collection current\nReplace an outdated document with a new version. New questions immediately use the new version, while earlier answers keep their original references.`,
   },
   {
     locale: "en",
@@ -30,7 +30,7 @@ const ENTRIES: Entry[] = [
     type: "article",
     title: "Supported file types and limits",
     summary: "What you can upload today, and what to do with files we do not accept yet.",
-    body: `## Accepted today\nText-based PDF, DOCX, TXT, and Markdown files are supported. Each file may be at most 10 MB, 200 pages, or 500,000 extracted characters — the most restrictive limit that applies wins.\n\n## Not accepted yet\nScanned PDFs without a text layer, encrypted documents, archives such as ZIP, executables, and spreadsheets are rejected with a clear message. Optical character recognition (OCR) for scanned documents is on our roadmap and is not available in the current release.\n\n## Preparing scanned material\nIf a document exists only on paper, convert it to a text-based PDF using a scanning app that performs OCR before uploading, then check that the extracted text is readable.`,
+    body: `## Accepted today\nText-based PDF, DOCX, TXT, and Markdown files are supported. Each file may be at most 10 MB, 200 pages, or 500,000 extracted characters. The most restrictive limit that applies wins.\n\n## Not accepted yet\nScanned PDFs without a text layer, encrypted documents, archives such as ZIP, executables, and spreadsheets are rejected with a clear message. Optical character recognition (OCR) for scanned documents is on our roadmap and is not available in the current release.\n\n## Preparing scanned material\nIf a document exists only on paper, convert it to a text-based PDF using a scanning app that performs OCR before uploading, then check that the extracted text is readable.`,
   },
   {
     locale: "en",
@@ -54,7 +54,7 @@ const ENTRIES: Entry[] = [
     type: "article",
     title: "Answering operations questions",
     summary: "How a five-person trading company uses the workspace for daily policy questions.",
-    body: `Recurring internal questions — how to submit a purchase request, what a meal allowance covers, who approves what — consume manager time every week. In this workflow, an administrator maintains the policy library, and employees ask directly.\n\nA typical exchange: an employee asks how to request a purchase of HKD 6,000. The answer cites the approval-threshold section of the purchase policy, names the required approvals, and links the passage. If the answer lacks a needed detail — for example a vendor list that is not in the library — the response says which document is missing, and the administrator adds it.\n\nThe measure of success is not answer count; it is whether employees stop queueing at a manager's desk for facts the company has already written down.`,
+    body: `Recurring internal questions (how to submit a purchase request, what a meal allowance covers, who approves what) consume manager time every week. In this workflow, an administrator maintains the policy library, and employees ask directly.\n\nA typical exchange: an employee asks how to request a purchase of HKD 6,000. The answer cites the approval-threshold section of the purchase policy, names the required approvals, and links the passage. If the answer lacks a needed detail (for example a vendor list that is not in the library), the response says which document is missing, and the administrator adds it.\n\nThe measure of success is not answer count; it is whether employees stop queueing at a manager's desk for facts the company has already written down.`,
   },
   {
     locale: "en",
@@ -62,7 +62,7 @@ const ENTRIES: Entry[] = [
     type: "article",
     title: "Preparing support responses",
     summary: "Comparing two product documents before writing to a customer.",
-    body: `Support teams often need to check what a warranty covers and what a product note says about a symptom before replying to a customer. With the workspace, the agent asks one question scoped to the two relevant documents.\n\nThe answer quotes each document's position with citations, so the agent can verify both passages before writing. Where the documents disagree — for example an older note that conflicts with a newer policy — the answer flags the conflict with both versions and dates, and the agent decides what to communicate. The assistant never sends the customer response itself; it prepares the evidence for a person to use.`,
+    body: `Support teams often need to check what a warranty covers and what a product note says about a symptom before replying to a customer. With the workspace, the agent asks one question scoped to the two relevant documents.\n\nThe answer quotes each document's position with citations, so the agent can verify both passages before writing. Where the documents disagree (for example an older note that conflicts with a newer policy), the answer flags the conflict with both versions and dates, and the agent decides what to communicate. The assistant never sends the customer response itself; it prepares the evidence for a person to use.`,
   },
   {
     locale: "zh-hant",
@@ -102,7 +102,7 @@ const ENTRIES: Entry[] = [
     type: "article",
     title: "回應日常營運問題",
     summary: "一間五人貿易公司如何以工作區處理每日政策查詢。",
-    body: `重複出現的內部問題——如何提交採購申請、膳食津貼上限、各級審批權限——每星期都佔用管理者時間。在此流程中，管理員維護政策庫，員工直接提問。\n\n典型例子：員工查詢如何申請 6,000 港元的採購。答案引用採購政策的審批門檻章節，列出所需審批，並連結原文段落。若答案缺少所需細節（例如政策庫中沒有供應商名單），回應會指出缺少的文件，管理員再行補充。\n\n成功指標不是答案數量，而是員工是否不再為公司早已寫明的事實排隊等候管理者回覆。`,
+    body: `重複出現的內部問題，如何提交採購申請、膳食津貼上限、各級審批權限，每星期都佔用管理者時間。在此流程中，管理員維護政策庫，員工直接提問。\n\n典型例子：員工查詢如何申請 6,000 港元的採購。答案引用採購政策的審批門檻章節，列出所需審批，並連結原文段落。若答案缺少所需細節（例如政策庫中沒有供應商名單），回應會指出缺少的文件，管理員再行補充。\n\n成功指標不是答案數量，而是員工是否不再為公司早已寫明的事實排隊等候管理者回覆。`,
   },
   {
     locale: "zh-hant",
@@ -110,7 +110,7 @@ const ENTRIES: Entry[] = [
     type: "article",
     title: "準備客服回覆",
     summary: "撰寫客戶回覆前，先比較兩份產品文件。",
-    body: `客服團隊回覆客戶前，通常需要查證保養範圍及產品說明對某症狀的描述。使用工作區時，專員可就兩份相關文件提出一條問題。\n\n答案會引用各文件的立場，讓專員落筆前核實兩段原文。當文件之間有出入——例如舊說明與新政策矛盾——答案會連同版本及日期標明衝突，由專員決定如何回覆。助理不會代為發送客戶回覆；它為人準備證據。`,
+    body: `客服團隊回覆客戶前，通常需要查證保養範圍及產品說明對某症狀的描述。使用工作區時，專員可就兩份相關文件提出一條問題。\n\n答案會引用各文件的立場，讓專員落筆前核實兩段原文。當文件之間有出入，例如舊說明與新政策矛盾，答案會連同版本及日期標明衝突，由專員決定如何回覆。助理不會代為發送客戶回覆；它為人準備證據。`,
   },
 ];
 

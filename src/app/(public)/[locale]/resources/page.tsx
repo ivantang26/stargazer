@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { dict, isLocale, alternatesFor, type Locale } from "@/lib/i18n";
 import { getDb, ensureSeeded } from "@/lib/db";
+import PageHero from "@/components/public/page-hero";
 
 export const dynamic = "force-dynamic";
 
@@ -12,11 +14,6 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   return { title: t.resources.metaTitle, description: t.resources.metaDescription, alternates: alternatesFor("/resources") };
 }
 
-/**
- * Resources: the observatory (the reference library) on the first screen,
- * then the guides set like a programme's notes — title, summary, date — with
- * a quiet rail of plates beside the list.
- */
 export default async function ResourcesPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
@@ -31,88 +28,38 @@ export default async function ResourcesPage({ params }: { params: { locale: stri
 
   return (
     <div>
-      <section className="ihero">
-        <div>
-          <h1 className="ihero__title" data-reveal>{t.resources.title}</h1>
-          <p className="ihero__sub" data-reveal style={{ ["--reveal-delay" as string]: "70ms" }}>
-            {t.resources.subtitle}
+      <PageHero title={t.resources.title} sub={t.resources.subtitle} />
+      <section className="ps-container pb-24">
+        {entries.length === 0 ? (
+          <p className="rounded-[var(--r-lg)] border border-dashed border-ps-line p-10 text-center text-[15px] text-ps-muted">
+            {locale === "zh-hant" ? "暫時未有指南。" : "No guides published yet."}
           </p>
-          <div className="ihero__actions" data-reveal style={{ ["--reveal-delay" as string]: "140ms" }}>
-            <Link href={`/${locale}/demo`} className="ps-action">{t.common.tryDemo}</Link>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {entries.map((e, i) => {
+              const mins = Math.max(2, Math.round(e.len / (locale === "zh-hant" ? 550 : 950)));
+              return (
+                <Link
+                  key={e.slug}
+                  href={`/${locale}/resources/${e.slug}`}
+                  className="group flex flex-col rounded-[var(--r-lg)] border border-ps-line bg-ps-surface p-6 transition hover:border-ps-accent"
+                  data-reveal
+                  style={{ ["--reveal-delay" as string]: `${(i % 2) * 60}ms` }}
+                >
+                  <p className="font-mono text-[12.5px] text-ps-muted">
+                    {e.published_at.slice(0, 10)} · {mins} {t.resources.minRead}
+                  </p>
+                  <h2 className="mt-3 text-[18px] font-semibold leading-snug tracking-tight text-ps-ink">{e.title}</h2>
+                  <p className="mt-2 flex-1 text-[15px] leading-relaxed text-ps-muted">{e.summary}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-medium text-ps-accent">
+                    {t.resources.readMore}
+                    <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
-        </div>
-        <figure style={{ margin: 0 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="ihero__plate"
-            src="/assets/kitlv-51w12-spyk-j-van-der-observatoire.jpg"
-            alt="Copper engraving of the Peking observatory with its brass instruments, 1736"
-            width={1920}
-            height={1433}
-            data-reveal
-            style={{ ["--reveal-delay" as string]: "100ms", aspectRatio: "4 / 3", maxWidth: 520 }}
-          />
-          <figcaption className="ihero__caption" data-reveal style={{ ["--reveal-delay" as string]: "160ms" }}>
-            {locale === "zh-hant" ? "北京觀象台，1736 年銅版畫。" : "The Peking observatory, copper engraving, 1736."}
-          </figcaption>
-        </figure>
-      </section>
-
-      <section className="readgrid" style={{ paddingTop: 0, paddingBottom: 150 }}>
-        <div className="readgrid__rail">
-          <h2 className="readgrid__h" data-reveal>{t.resources.listTitle}</h2>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="readgrid__plate"
-            src="/assets/hemelkaart-met-christelijke-sterrenbeelden-coelistellati-chr.jpg"
-            alt="Engraved celestial chart of the constellations, 1660"
-            width={1920}
-            height={1624}
-            loading="lazy"
-            data-reveal
-            style={{ ["--reveal-delay" as string]: "90ms" }}
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="readgrid__plate"
-            src="/assets/hemelkaart-van-de-banen-van-venus-en.jpg"
-            alt="Engraved chart of the orbits of Venus and Mercury, 1660"
-            width={1920}
-            height={1615}
-            loading="lazy"
-            data-reveal
-            style={{ ["--reveal-delay" as string]: "150ms" }}
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="readgrid__plate"
-            src="/assets/starry-sky-with-north-star-circled-poster.jpg"
-            alt="Stars turning about the celestial pole"
-            width={1280}
-            height={720}
-            loading="lazy"
-            data-reveal
-            style={{ ["--reveal-delay" as string]: "210ms", aspectRatio: "16 / 9", objectFit: "cover" }}
-          />
-        </div>
-        <div className="readlist">
-          {entries.map((e) => {
-            const mins = Math.max(2, Math.round(e.len / (locale === "zh-hant" ? 550 : 950)));
-            return (
-              <article key={e.slug} className="readlist__row" data-reveal>
-                <div>
-                  <Link href={`/${locale}/resources/${e.slug}`} className="readlist__title">
-                    {e.title}
-                  </Link>
-                  <p className="readlist__summary">{e.summary}</p>
-                </div>
-                <p className="readlist__meta">
-                  {e.published_at} · {mins} {t.resources.minRead}
-                </p>
-              </article>
-            );
-          })}
-        </div>
+        )}
       </section>
     </div>
   );

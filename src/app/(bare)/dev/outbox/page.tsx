@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getDb, ensureSeeded } from "@/lib/db";
 import { formatDateTime } from "@/lib/util";
 
-export const metadata: Metadata = { title: "Development outbox — Stargazer", robots: { index: false } };
+export const metadata: Metadata = { title: "Development outbox | Stargazer", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 /**

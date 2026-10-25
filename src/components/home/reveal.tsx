@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 /**
- * Entrance motion: headings, text and pictures rise 22px with opacity,
- * staggered 60–90ms, triggered once per section. The hidden starting state
- * lives inside prefers-reduced-motion: no-preference (CSS), so the reduced
- * page is the finished page.
+ * Entrance motion for below-the-fold content: elements marked data-reveal
+ * rise 12px and fade in once when they enter the viewport. Re-binds on
+ * client navigation. The hidden starting state is gated behind
+ * prefers-reduced-motion: no-preference in CSS.
  */
 export default function Reveal() {
+  const pathname = usePathname();
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)"));
     if (!("IntersectionObserver" in window)) {
       nodes.forEach((n) => n.classList.add("is-in"));
       return;
@@ -24,10 +26,10 @@ export default function Reveal() {
           }
         }
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
     );
     nodes.forEach((n) => io.observe(n));
     return () => io.disconnect();
-  }, []);
+  }, [pathname]);
   return null;
 }

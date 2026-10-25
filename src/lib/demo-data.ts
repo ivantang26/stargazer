@@ -13,7 +13,7 @@ export const DEMO_SUGGESTED_QUESTIONS: { en: string[]; zh: string[] } = {
   en: [
     "How do I submit a purchase request for HKD 6,000?",
     "How many annual leave days do employees get, and when can new joiners take leave?",
-    "A customer's Aurora lamp is flickering — is that covered by warranty?",
+    "A customer's Aurora lamp is flickering. Is that covered by warranty?",
     "What is the meal limit for client entertainment?",
     "Can staff print customer documents when working from home?",
   ],

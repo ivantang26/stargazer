@@ -9,7 +9,7 @@ function Err({ locale, code }: { locale: Locale; code: string }) {
   const t = dict(locale);
   const known = code && (t.errors as Record<string, string>)[code];
   return (
-    <p className="rounded-lg border border-[#552d30] bg-[#3a2426] px-4 py-3 text-sm text-[#e8a0a0]" role="alert">
+    <p className="rounded-[var(--r-sm)] bg-ps-danger-soft px-4 py-3 text-sm text-ps-danger" role="alert">
       {known ?? t.errors.bad_request}
     </p>
   );

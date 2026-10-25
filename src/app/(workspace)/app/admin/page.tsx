@@ -120,7 +120,7 @@ export default async function AdminPage({
                     <span className="ml-2 rounded-full bg-navy-900/5 px-2 py-0.5 text-xs font-semibold text-navy-900">{lead.status}</span>
                   </p>
                   <p className="mt-0.5 text-xs text-ink-500">
-                    {lead.email} · {lead.org_name || "—"} · {lead.enquiry_type} · {formatDate(lead.created_at, locale)}
+                    {lead.email} · {lead.org_name || "-"} · {lead.enquiry_type} · {formatDate(lead.created_at, locale)}
                     {lead.team_size ? ` · ${lead.team_size}` : ""}{lead.doc_volume ? ` · ${lead.doc_volume}` : ""}
                   </p>
                 </div>
@@ -132,7 +132,7 @@ export default async function AdminPage({
                 />
               </div>
               <p className="mt-3 rounded-lg bg-paper px-3.5 py-2.5 text-sm text-ink-700">{lead.message}</p>
-              <p className="mt-2 text-xs text-ink-500">{t.app.admin.leadConsent}: {lead.marketing_consent ? "✓" : "—"}</p>
+              <p className="mt-2 text-xs text-ink-500">{t.app.admin.leadConsent}: {lead.marketing_consent ? "✓" : "-"}</p>
             </div>
           ))}
         </section>
@@ -156,8 +156,8 @@ export default async function AdminPage({
                 <tr key={o.id}>
                   <td className="px-4 py-3 font-mono text-xs text-ink-500">{o.id.slice(0, 12)}…</td>
                   <td className="px-4 py-3 font-medium text-ink-900">{o.name}{o.deletion_status ? ` (${o.deletion_status})` : ""}</td>
-                  <td className="px-4 py-3 text-ink-700">{o.plan_id ?? "—"}</td>
-                  <td className="px-4 py-3 text-ink-700">{o.sub_status ?? "—"}</td>
+                  <td className="px-4 py-3 text-ink-700">{o.plan_id ?? "-"}</td>
+                  <td className="px-4 py-3 text-ink-700">{o.sub_status ?? "-"}</td>
                   <td className="px-4 py-3 text-ink-700">{o.docs}</td>
                   <td className="px-4 py-3 text-ink-700">{o.members}</td>
                 </tr>

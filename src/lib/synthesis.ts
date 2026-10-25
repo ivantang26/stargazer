@@ -142,7 +142,7 @@ export function synthesize(
     answer +=
       answerLang === "zh"
         ? `\n\n注意：「${conflict[0].docTitle}」與「${conflict[1].docTitle}」對相關主題的表述可能不一致，請核對兩份文件的版本及日期 [${conflict[0].n}][${conflict[1].n}]。`
-        : `\n\nNote: “${conflict[0].docTitle}” and “${conflict[1].docTitle}” may describe this topic inconsistently — please review both documents' versions and dates [${conflict[0].n}][${conflict[1].n}].`;
+        : `\n\nNote: “${conflict[0].docTitle}” and “${conflict[1].docTitle}” may describe this topic inconsistently. Please review both documents' versions and dates [${conflict[0].n}][${conflict[1].n}].`;
   }
 
   return {

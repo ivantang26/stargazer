@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { dict, isLocale, alternatesFor, type Locale } from "@/lib/i18n";
 import { DEMO_LIMITS } from "@/lib/plans";
 import DemoClient from "@/components/demo-client";
+import PageHero from "@/components/public/page-hero";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   if (!isLocale(locale)) return {};
@@ -27,14 +28,11 @@ export default async function DemoPage({ params }: { params: { locale: string } 
   }
   const t = dict(locale);
   return (
-    <div style={{ padding: "40px clamp(20px, 3.4vw, 48px) 120px" }}>
-      <header className="mb-12" style={{ maxWidth: "52ch" }}>
-        <h1 className="ps-h" data-reveal style={{ fontSize: "clamp(44px, 5.2vw, 88px)" }}>{t.demo.title}</h1>
-        <p className="ps-statement mt-5" data-reveal style={{ ["--reveal-delay" as string]: "80ms", color: "var(--ink)" } as React.CSSProperties}>
-          {t.demo.subtitle}
-        </p>
-      </header>
-      <DemoClient locale={locale} initialRemaining={remaining} />
+    <div>
+      <PageHero title={t.demo.title} sub={t.demo.subtitle} />
+      <div className="ps-container pb-24">
+        <DemoClient locale={locale} initialRemaining={remaining} />
+      </div>
     </div>
   );
 }

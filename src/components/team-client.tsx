@@ -82,7 +82,7 @@ export default function TeamClient({
         </div>
         {seatsFull && (
           <p className="mt-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-            {tm.seatsFullTitle} — {tm.seatsFullBody}{" "}
+            {tm.seatsFullTitle}: {tm.seatsFullBody}{" "}
             <Link href="/app/billing" className="font-semibold underline">{t.app.ask.upgradeCta}</Link>
           </p>
         )}
@@ -214,7 +214,7 @@ export default function TeamClient({
               <div>
                 <label htmlFor="tr-to" className="label">{tm.inviteEmail}</label>
                 <select id="tr-to" value={transferTo} onChange={(e) => setTransferTo(e.target.value)} className="input">
-                  <option value="">—</option>
+                  <option value="">-</option>
                   {members.filter((m) => m.id !== myUserId && m.verified).map((m) => (
                     <option key={m.id} value={m.id}>{m.email}</option>
                   ))}

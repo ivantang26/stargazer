@@ -33,7 +33,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     [...Array.from(allCitations.entries())]
       .sort((a, b) => a[0] - b[0])
       .forEach(([n, c]) => {
-        lines.push(`**[${n}] ${c.docTitle}** — ${c.section ?? ""} (v${c.versionNo}${c.superseded ? ", superseded" : ""})`, "", `> ${mdEscape(c.excerpt).replace(/\n/g, "\n> ")}`, "");
+        lines.push(`**[${n}] ${c.docTitle}** - ${c.section ?? ""} (v${c.versionNo}${c.superseded ? ", superseded" : ""})`, "", `> ${mdEscape(c.excerpt).replace(/\n/g, "\n> ")}`, "");
       });
   }
   return new NextResponse(lines.join("\n"), {

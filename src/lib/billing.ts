@@ -449,7 +449,7 @@ function notifyOwner(orgId: string, kind: string, planId?: PlanId): void {
       subject: zh ? "Stargazer：續費付款失敗" : "Stargazer: renewal payment failed",
       body: zh
         ? `最近一次續費付款失敗。我們提供三天寬限期（額度不超過原計劃），請更新付款方式。`
-        : `The latest renewal payment failed. A three-day grace period applies (bounded allowance, no larger than your previous plan) — please update your payment method.`,
+        : `The latest renewal payment failed. A three-day grace period applies (bounded allowance, no larger than your previous plan). Please update your payment method.`,
     },
     subscription_deleted: {
       subject: zh ? "Stargazer：訂閱已結束" : "Stargazer: subscription ended",

@@ -4,7 +4,7 @@ import { dict, isLocale, type Locale } from "@/lib/i18n";
 import { AuthCard } from "@/components/auth-card";
 import { ResetForm } from "@/components/auth-forms";
 
-export const metadata: Metadata = { title: "Choose a new password — Stargazer", robots: { index: false } };
+export const metadata: Metadata = { title: "Choose a new password | Stargazer", robots: { index: false } };
 
 export default async function ResetPage({
   params,

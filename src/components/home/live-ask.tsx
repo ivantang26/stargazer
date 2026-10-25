@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ArrowUp, CaretDown, FileText, WarningCircle } from "@phosphor-icons/react";
 import { dict, type Locale } from "@/lib/i18n";
+import { DEMO_SUGGESTED_QUESTIONS } from "@/lib/demo-data";
 
 interface DemoCitation {
   n: number;
@@ -13,44 +15,43 @@ interface DemoCitation {
 }
 
 /**
- * The one live thing: type a question on the dark half, and the light half
- * returns a real answer from the demo's synthetic policies — citations and
- * all. Real content, thumb-sized on a phone, a plain static fallback without
- * script, and it never blocks reading.
+ * The hero's working panel: a real question box wired to the demo API,
+ * answering from the synthetic policies with citations that open their
+ * passage. Falls back to the static example answer without script.
  */
 export default function LiveAsk({ locale }: { locale: Locale }) {
   const t = dict(locale);
   const zh = locale === "zh-hant";
-  const [question, setQuestion] = useState(
-    zh ? "超過五千港元的採購需要誰批准？" : "Who approves a purchase above HKD 5,000?"
-  );
+  const [question, setQuestion] = useState("");
+  const [asked, setAsked] = useState("");
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [answer, setAnswer] = useState("");
   const [status, setStatus] = useState<"complete" | "insufficient">("complete");
   const [citations, setCitations] = useState<DemoCitation[]>([]);
-  const [errorKind, setErrorKind] = useState("");
+  const [open, setOpen] = useState<number | null>(null);
 
-  const fallbackAnswer = t.demo.exampleBody;
+  const suggestions = (zh ? DEMO_SUGGESTED_QUESTIONS.zh : DEMO_SUGGESTED_QUESTIONS.en).slice(0, 3);
 
-  async function ask() {
-    if (!question.trim() || state === "busy") return;
+  async function ask(q: string) {
+    const trimmed = q.trim();
+    if (!trimmed || state === "busy") return;
+    setAsked(trimmed);
+    setQuestion("");
+    setOpen(null);
     setState("busy");
-    setErrorKind("");
     try {
       const res = await fetch("/api/demo/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question: trimmed }),
       });
       const data = (await res.json()) as {
         ok: boolean;
         answer?: string;
         status?: "complete" | "insufficient";
         citations?: DemoCitation[];
-        error?: string;
       };
       if (!res.ok || !data.ok) {
-        setErrorKind(data.error ?? "rate_limited");
         setState("error");
         return;
       }
@@ -59,128 +60,146 @@ export default function LiveAsk({ locale }: { locale: Locale }) {
       setCitations(data.citations ?? []);
       setState("done");
     } catch {
-      setErrorKind("provider_unavailable");
       setState("error");
     }
   }
 
   return (
-    <section className="liveask" id="try" aria-labelledby="liveask-h">
-
-      <div className="liveask__in">
-        <h2 id="liveask-h" className="text-[20px] font-medium" style={{ color: "var(--muted)" }}>
-          {t.home.liveLabel}
-        </h2>
-        <textarea
-          id="live-q"
-          className="liveask__field"
-          rows={3}
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              void ask();
-            }
-          }}
-          maxLength={400}
-        />
-        <div className="liveask__send">
-          <button className="ps-action" onClick={() => void ask()} disabled={state === "busy"}>
-            {state === "busy" ? t.demo.asking : t.home.liveCta}
-          </button>
-        </div>
-        <p className="mt-6 max-w-[38ch] text-[16px]" style={{ color: "var(--muted)" }}>
-          {t.home.liveHint}
-        </p>
-        <p className="liveask__h-in" data-reveal aria-hidden="true">
-          {t.home.showcaseQ}
-        </p>
+    <div className="ps-panel overflow-hidden shadow-[var(--shadow)]">
+      <div className="flex items-center justify-between gap-4 border-b border-ps-line px-5 py-3">
+        <p className="text-[14px] font-medium text-ps-ink">{t.home.liveLabel}</p>
+        <p className="truncate text-[12.5px] text-ps-muted">Northlight Trading Co.</p>
       </div>
-      <div className="liveask__out">
+
+      <div className="h-[340px] overflow-y-auto px-5 py-5" aria-live="polite">
         {state === "idle" && (
-          <p className="liveask__status">
-            {zh
-              ? "在左邊輸入問題，答案會在這裏出現——連引用一起。"
-              : "Type on the dark half; the answer arrives here, sources and all."}
-          </p>
-        )}
-        {state === "busy" && (
-          <p className="liveask__status" aria-live="polite">
-            {t.demo.asking}
-          </p>
-        )}
-        {state === "error" && (
-          <div className="liveask__status">
-            <p>{t.demo.quotaError}</p>
-            <Link href={`/${locale}/signup`} className="mt-4 inline-block font-semibold underline decoration-1 underline-offset-4" style={{ color: "var(--ink-on-light)" }}>
-              {t.common.startTrial} →
-            </Link>
+          <div>
+            <p className="text-[14px] text-ps-muted">{t.demo.suggestedTitle}</p>
+            <ul className="mt-3 space-y-2">
+              {suggestions.map((q) => (
+                <li key={q}>
+                  <button
+                    type="button"
+                    onClick={() => void ask(q)}
+                    className="w-full rounded-[var(--r-sm)] border border-ps-line bg-ps-bg px-3.5 py-2.5 text-left text-[14.5px] text-ps-ink transition hover:border-ps-accent active:translate-y-px"
+                  >
+                    {q}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <noscript>
+              <p className="mt-5 text-[15px] leading-relaxed text-ps-ink">{t.demo.exampleBody}</p>
+            </noscript>
           </div>
         )}
+
+        {state !== "idle" && (
+          <div className="ml-auto w-fit max-w-[85%] rounded-[var(--r-lg)] rounded-br-[4px] bg-ps-sunk px-3.5 py-2.5 text-[14.5px] text-ps-ink">
+            {asked}
+          </div>
+        )}
+
+        {state === "busy" && (
+          <div className="mt-5 space-y-2.5" aria-label={t.demo.asking}>
+            <div className="h-3 w-11/12 animate-pulse rounded bg-ps-sunk" />
+            <div className="h-3 w-4/5 animate-pulse rounded bg-ps-sunk" />
+            <div className="h-3 w-3/5 animate-pulse rounded bg-ps-sunk" />
+          </div>
+        )}
+
+        {state === "error" && (
+          <div className="mt-5 flex gap-3 rounded-[var(--r-sm)] bg-ps-warn-soft p-3.5 text-[14px] text-ps-ink">
+            <WarningCircle size={18} className="mt-0.5 shrink-0 text-ps-warn" />
+            <div>
+              <p>{t.demo.quotaError}</p>
+              <Link href={`/${locale}/signup`} className="mt-2 inline-block font-medium text-ps-accent underline underline-offset-4">
+                {t.common.startTrial}
+              </Link>
+            </div>
+          </div>
+        )}
+
         {state === "done" && (
-          <div data-reveal>
+          <div className="mt-5">
             {status === "insufficient" && (
-              <p className="mb-3 text-[17px] font-semibold" style={{ color: "#8a5a10" }}>
+              <p className="mb-2 flex items-center gap-1.5 text-[13.5px] font-medium text-ps-warn">
+                <WarningCircle size={16} />
                 {t.demo.insufficientTitle}
               </p>
             )}
-            <div className="liveask__answer" aria-live="polite">
-              {renderWithCitations(answer, citations)}
-            </div>
-            {citations.length > 0 && (
-              <div className="liveask__sources">
-                {citations.map((c) => (
-                  <details key={c.n} className="liveask__src">
-                    <summary>
-                      [{c.n}] {c.docTitle}
-                      {c.section ? ` · ${c.section}` : ""} · v{c.versionNo}
-                    </summary>
-                    <p className="mt-2 text-[14px] leading-relaxed">{c.excerpt}</p>
-                  </details>
-                ))}
-              </div>
-            )}
-            <p className="liveask__note">
-              {t.demo.datasetLabel} ·{" "}
-              <button
-                className="font-semibold underline decoration-1 underline-offset-4"
-                style={{ color: "var(--ink-on-light)" }}
-                onClick={() => {
-                  setState("idle");
-                  setQuestion("");
-                }}
-              >
-                {t.home.liveReset}
-              </button>
+            <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-ps-ink">
+              {renderWithCitations(answer)}
             </p>
+            {citations.length > 0 && (
+              <ul className="mt-4 space-y-1.5">
+                {citations.map((c) => (
+                  <li key={c.n} className="rounded-[var(--r-sm)] bg-ps-sunk">
+                    <button
+                      type="button"
+                      onClick={() => setOpen(open === c.n ? null : c.n)}
+                      aria-expanded={open === c.n}
+                      className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13.5px] text-ps-ink"
+                    >
+                      <span className="ui-cite !m-0">{c.n}</span>
+                      <FileText size={15} className="shrink-0 text-ps-muted" />
+                      <span className="min-w-0 flex-1 truncate">
+                        {c.docTitle}
+                        {c.section ? `, ${c.section}` : ""}
+                        <span className="text-ps-muted"> v{c.versionNo}</span>
+                      </span>
+                      <CaretDown size={14} className={`shrink-0 text-ps-muted transition ${open === c.n ? "rotate-180" : ""}`} />
+                    </button>
+                    {open === c.n && (
+                      <p className="border-t border-ps-line px-3 py-2.5 text-[13.5px] leading-relaxed text-ps-muted">{c.excerpt}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
-        <noscript>
-          <p className="liveask__answer">{fallbackAnswer}</p>
-        </noscript>
-        <p className="liveask__h-out" data-reveal aria-hidden="true">
-          {t.home.showcaseA}
-        </p>
       </div>
-    </section>
+
+      <form
+        className="flex items-center gap-2 border-t border-ps-line bg-ps-bg p-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          void ask(question);
+        }}
+      >
+        <label htmlFor="live-q" className="sr-only">
+          {t.demo.inputLabel}
+        </label>
+        <input
+          id="live-q"
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder={t.demo.inputPlaceholder}
+          maxLength={400}
+          className="h-10 min-w-0 flex-1 bg-transparent px-2 text-[15px] text-ps-ink placeholder:text-ps-muted focus:outline-none"
+        />
+        <button
+          type="submit"
+          disabled={state === "busy" || !question.trim()}
+          aria-label={t.home.liveCta}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--r-sm)] bg-ps-accent text-ps-accent-ink transition hover:brightness-110 active:translate-y-px disabled:opacity-40"
+        >
+          <ArrowUp size={18} weight="bold" />
+        </button>
+      </form>
+    </div>
   );
 }
 
-function renderWithCitations(text: string, citations: DemoCitation[]) {
-  const parts = text.split(/(\[\d+\])/g);
-  return parts.map((part, i) => {
+function renderWithCitations(text: string) {
+  return text.split(/(\[\d+\])/g).map((part, i) => {
     const m = part.match(/^\[(\d+)\]$/);
     if (!m) return <span key={i}>{part}</span>;
-    const n = Number(m[1]);
-    const c = citations.find((x) => x.n === n);
     return (
-      <span
-        key={i}
-        title={c ? `${c.docTitle}${c.section ? ` · ${c.section}` : ""}` : undefined}
-        className="ui-cite"
-      >
-        {n}
+      <span key={i} className="ui-cite">
+        {m[1]}
       </span>
     );
   });

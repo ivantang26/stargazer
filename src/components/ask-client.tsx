@@ -252,7 +252,7 @@ export default function AskClient(props: AskProps) {
           <div className={`px-4 py-2.5 text-sm ${props.readOnly ? "bg-amber-100 text-amber-900" : props.graceActive ? "bg-amber-100 text-amber-900" : "bg-accent-500/10 text-navy-900"}`}>
             {props.readOnly ? (
               <>
-                <strong>{a.readOnlyTitle}</strong> — {a.readOnlyBody}
+                <strong>{a.readOnlyTitle}</strong>: {a.readOnlyBody}
               </>
             ) : props.graceActive ? (
               a.graceBanner
@@ -265,12 +265,12 @@ export default function AskClient(props: AskProps) {
           <div className="border-b border-line bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
             {banner.kind === "quota_exceeded" ? (
               <>
-                <strong>{a.quotaExhaustedTitle}</strong> — {a.quotaExhaustedBody}{" "}
+                <strong>{a.quotaExhaustedTitle}</strong>: {a.quotaExhaustedBody}{" "}
                 {banner.extra?.resetDate ? `(${a.resetsOn} ${String(banner.extra.resetDate).slice(0, 10)})` : null}{" "}
                 <Link href="/app/billing" className="font-semibold underline">{a.upgradeCta}</Link>
               </>
             ) : banner.kind === "concurrency_limit" ? (
-              <><strong>{a.concurrencyTitle}</strong> — {a.concurrencyBody}</>
+              <><strong>{a.concurrencyTitle}</strong>: {a.concurrencyBody}</>
             ) : (
               (t.errors as Record<string, string>)[banner.kind] ?? t.errors.bad_request
             )}

@@ -15,7 +15,7 @@ export default function LocaleSwitch({ locale }: { locale: Locale }) {
     <Link
       href={`/${other}${suffix}`}
       lang={other}
-      className="text-[14px] font-semibold text-[var(--muted)] transition hover:text-[var(--accent)]"
+      className="ps-link"
       aria-label={`${t.common.languageSwitchLabel}: ${t.common.otherLocaleName}`}
     >
       {t.common.otherLocaleName}

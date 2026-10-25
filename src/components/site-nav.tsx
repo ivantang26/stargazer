@@ -1,39 +1,75 @@
 import Link from "next/link";
+import { List } from "@phosphor-icons/react/dist/ssr";
 import { dict, type Locale } from "@/lib/i18n";
 import { currentUser } from "@/lib/auth";
 import LocaleSwitch from "./locale-switch";
 import { StarMark } from "./star-mark";
 
-/**
- * Interior-page navigation: a plain bar on the page ground — wordmark, flat
- * links, one brass action. No bar chrome, no glass.
- */
+/** Public navigation: sticky 64px bar, flat links, one primary action. */
 export default async function SiteNav({ locale }: { locale: Locale }) {
   const t = dict(locale);
   const user = await currentUser();
   const p = (s: string) => `/${locale}${s}`;
+  const links: Array<[string, string]> = [
+    [t.nav.product, p("/products/knowledge")],
+    [t.nav.solutions, p("/solutions/operations")],
+    [t.nav.pricing, p("/pricing")],
+    [t.nav.resources, p("/resources")],
+    [t.nav.about, p("/about")],
+  ];
+  const account: [string, string] = user?.emailVerified
+    ? [t.app.sidebar.dashboard, "/app"]
+    : [t.common.signIn, p("/signin")];
+
   return (
-    <header className="site-nav">
-      <div className="flex h-20 items-center gap-8 px-5 sm:px-6 lg:px-12">
-        <Link href={p("/")} className="nav-wordmark flex items-center gap-2.5 text-[17px] font-semibold tracking-wide text-[var(--ink)]">
-          <StarMark className="h-7 w-7 text-[var(--accent)]" />
-          <span>Stargazer</span>
+    <header className="sticky top-0 z-30 border-b border-ps-line bg-ps-bg/85 backdrop-blur supports-[backdrop-filter]:bg-ps-bg/75">
+      <div className="ps-container flex h-16 items-center gap-8">
+        <Link href={p("/")} className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-ps-ink">
+          <StarMark className="h-6 w-6 text-ps-accent" />
+          Stargazer
         </Link>
-        <nav className="ml-4 hidden items-center gap-7 lg:flex" aria-label="Primary">
-          <Link href={p("/products/knowledge")} className="ps-link">{t.nav.knowledgeWorkspace}</Link>
-          <Link href={p("/solutions/operations")} className="ps-link">{t.nav.solutions}</Link>
-          <Link href={p("/pricing")} className="ps-link">{t.nav.pricing}</Link>
-          <Link href={p("/resources")} className="ps-link">{t.nav.resources}</Link>
-          <Link href={p("/about")} className="ps-link">{t.nav.about}</Link>
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
+          {links.map(([label, href]) => (
+            <Link key={href} href={href} className="ps-link">
+              {label}
+            </Link>
+          ))}
         </nav>
-        <div className="ml-auto flex items-center gap-5">
-          <LocaleSwitch locale={locale} />
-          <Link href={user?.emailVerified ? "/app" : p("/signin")} className="ps-link">
-            {user ? t.app.sidebar.dashboard : t.common.signIn}
+        <div className="ml-auto flex items-center gap-4">
+          <span className="hidden sm:inline">
+            <LocaleSwitch locale={locale} />
+          </span>
+          <Link href={account[1]} className="ps-link hidden sm:inline">
+            {account[0]}
           </Link>
-          <Link href={p("/demo")} className="ps-action !px-3.5 !py-2 !text-[15px] sm:!px-[18px] sm:!py-[9px] sm:!text-[16px]">
+          <Link href={p("/demo")} className="ps-action !py-2 !text-[14px]">
             {t.common.tryDemo}
           </Link>
+          <details className="group relative lg:hidden">
+            <summary
+              className="flex h-9 w-9 cursor-pointer list-none items-center justify-center rounded-[var(--r-sm)] border border-ps-line text-ps-ink [&::-webkit-details-marker]:hidden"
+              aria-label="Menu"
+            >
+              <List size={18} weight="bold" />
+            </summary>
+            <nav
+              className="absolute right-0 top-11 w-56 rounded-[var(--r-lg)] border border-ps-line bg-ps-surface p-2 shadow-[var(--shadow)]"
+              aria-label="Mobile"
+            >
+              {[...links, account].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="block rounded-[var(--r-sm)] px-3 py-2 text-[15px] text-ps-ink hover:bg-ps-sunk"
+                >
+                  {label}
+                </Link>
+              ))}
+              <div className="px-3 py-2">
+                <LocaleSwitch locale={locale} />
+              </div>
+            </nav>
+          </details>
         </div>
       </div>
     </header>

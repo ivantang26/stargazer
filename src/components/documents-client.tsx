@@ -97,7 +97,7 @@ export default function DocumentsClient({
     const data = (await res.json()) as { ok: boolean; conversationsDeleted?: number };
     setConfirmDelete(null);
     if (data.ok) {
-      setNotice({ kind: "warn", text: `${d.delete} ✓${data.conversationsDeleted ? ` — ${d.deleteConfirmNote} ${data.conversationsDeleted}` : ""}` });
+      setNotice({ kind: "warn", text: `${d.delete} ✓${data.conversationsDeleted ? `. ${d.deleteConfirmNote} ${data.conversationsDeleted}` : ""}` });
       router.refresh();
     }
   }
@@ -195,7 +195,7 @@ export default function DocumentsClient({
                   <h3 className="truncate font-semibold text-navy-900">{doc.title}</h3>
                   {stateBadge(doc.state)}
                   <span className="text-xs text-ink-500">
-                    {d.versionLabel} {doc.version_no ?? "—"}
+                    {d.versionLabel} {doc.version_no ?? "-"}
                     {doc.has_history ? ` · ${d.historyLabel}` : ""}
                   </span>
                 </div>
@@ -235,7 +235,7 @@ export default function DocumentsClient({
       {replaceFor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/40 p-4" role="dialog" aria-modal="true">
           <div className="card w-full max-w-md p-6">
-            <h3 className="font-bold text-navy-900">{d.replace} — {replaceFor.title}</h3>
+            <h3 className="font-bold text-navy-900">{d.replace}: {replaceFor.title}</h3>
             <p className="mt-2 text-sm text-ink-700">{d.replaceNote}</p>
             <input
               type="file"

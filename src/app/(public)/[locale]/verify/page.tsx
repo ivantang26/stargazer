@@ -5,7 +5,7 @@ import { dict, isLocale, type Locale } from "@/lib/i18n";
 import { AuthCard } from "@/components/auth-card";
 import { currentUser } from "@/lib/auth";
 
-export const metadata: Metadata = { title: "Verify your email — Stargazer", robots: { index: false } };
+export const metadata: Metadata = { title: "Verify your email | Stargazer", robots: { index: false } };
 
 export default async function VerifyPage({
   params,

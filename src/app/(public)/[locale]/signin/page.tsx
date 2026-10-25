@@ -4,7 +4,7 @@ import { dict, isLocale, type Locale } from "@/lib/i18n";
 import { AuthCard } from "@/components/auth-card";
 import { SignInForm } from "@/components/auth-forms";
 
-export const metadata: Metadata = { title: "Sign in — Stargazer", robots: { index: false } };
+export const metadata: Metadata = { title: "Sign in | Stargazer", robots: { index: false } };
 
 export default async function SignInPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();

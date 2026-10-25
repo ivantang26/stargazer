@@ -54,25 +54,12 @@ export default function ContactForm({ locale }: { locale: Locale }) {
   if (state === "done") {
     return (
       <div role="status">
-        <h2 className="readgrid__h">{t.contact.successTitle}</h2>
-        <p style={{ marginTop: 16, fontSize: 17.5, lineHeight: 1.6, maxWidth: "52ch", color: "var(--ink)" }}>
-          {t.contact.successBody}
-        </p>
-        <p
-          style={{
-            marginTop: 22,
-            display: "inline-block",
-            background: "var(--surface)",
-            borderRadius: "var(--radius)",
-            padding: "14px 20px",
-            fontSize: 22,
-            fontVariantNumeric: "tabular-nums",
-            color: "var(--ink)",
-          }}
-        >
+        <h2 className="text-2xl font-semibold tracking-tight text-ps-ink">{t.contact.successTitle}</h2>
+        <p className="mt-3 max-w-[52ch] text-[16px] leading-relaxed text-ps-ink">{t.contact.successBody}</p>
+        <p className="mt-6 inline-block rounded-[var(--r-sm)] bg-ps-sunk px-4 py-3 font-mono text-[16px] text-ps-ink">
           {t.contact.referenceLabel}: {reference}
         </p>
-        <p style={{ marginTop: 16, fontSize: 16, color: "var(--muted)" }}>
+        <p className="mt-4 text-[14px] text-ps-muted">
           {marketing ? t.contact.marketingYes : t.contact.marketingNo}
         </p>
       </div>
@@ -119,30 +106,21 @@ export default function ContactForm({ locale }: { locale: Locale }) {
           <input id="cf-vol" name="docVolume" className="input" placeholder="10–50, 50–200, 200+" />
         </div>
       </div>
-      <label className="flex items-start gap-3 text-[16px] text-[var(--muted)]">
+      <label className="flex items-start gap-3 text-[14.5px] text-ps-muted">
         <input
           type="checkbox"
           checked={marketing}
           onChange={(e) => setMarketing(e.target.checked)}
-          className="mt-1 h-4 w-4 rounded border-[var(--surface-2)] text-accent-600"
+          className="mt-1 h-4 w-4 rounded border-ps-line accent-[var(--accent)]"
         />
         {t.contact.consentLabel}
       </label>
       {state === "error" && (
-        <p
-          role="alert"
-          style={{
-            background: "rgba(90, 45, 48, 0.55)",
-            borderRadius: "var(--radius)",
-            padding: "12px 16px",
-            fontSize: 16,
-            color: "#e8b4b4",
-          }}
-        >
+        <p role="alert" className="rounded-[var(--r-sm)] bg-ps-danger-soft px-4 py-3 text-[14.5px] text-ps-danger">
           {t.errors[errorMsg as keyof typeof t.errors] ?? t.errors.bad_request}
         </p>
       )}
-      <button type="submit" disabled={state === "sending"} className="ps-action" style={{ border: 0, cursor: "pointer", font: "inherit" }}>
+      <button type="submit" disabled={state === "sending"} className="ps-action disabled:opacity-50">
         {state === "sending" ? t.common.loading : t.contact.submit}
       </button>
     </form>

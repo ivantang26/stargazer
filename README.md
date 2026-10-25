@@ -80,14 +80,14 @@ OCR for scanned PDFs, annual billing, saved answer templates, conversation shari
 
 ---
 
-## UI redesign — the split stage (taste-skill)
+## UI design
 
-The public site was redesigned with the `design-taste-frontend` skill (Leonxlnx/taste-skill).
+The public site and workspace share one plain, product-first system:
 
-- **Direction dealt:** *The split stage* (seed 222369781) with the **Erode** type system and a dark-ground palette, adapted to the subject: the dealt proportions kept, the hues taken from the brand and the material — night navy `#101623`, bone ink `#e8e4d8`, one starlight-brass accent `#d9b36a` on the action alone (the PRD's proposed blue-violet reads as the generic AI palette; reverting is a one-line token change in `globals.css`).
-- **The idea:** on this page, the engraved celestial atlas — the navigator's trusted, checkable reference — becomes the fixed half of the screen, while the citation ([1] opening its passage) becomes the constellation the product draws between a claim and its source. **The live thing:** type a question on the dark half of the homepage and the light half returns a real cited answer from the demo API.
-- **Structure:** atlas-fixed hero with the lowercase `stargazer` wordmark (the signature move: it scales down as the first screen leaves) → three statements pinned against true-size product fragments (`data-ui`) → the live question/answer split → the stars turning about the pole (11s loop) → prices set like a menu with the Peking observatory engraving → the questions as reading text → the first screen of the product already open on a brass field → one quiet footer line.
-- **Every interior page (extension, second pass):** about, product, both solutions pages, resources (+ article template), contact, security, privacy, terms, and the five account pages were rebuilt as compositions of the same direction: interior heroes with one archival plate, the input/output two-tone fields on solutions and product, reading documents on a 4/8 rail, the resources list set like programme notes, the privacy data inventory as a real table, and the account pages as the split stage (atlas plate fixed, form in the reading column). The interior frame (nav, footer) sits on the homepage's 48px margins.
-- **Workspace:** stays light and reading-first (PRD §7) with Erode headings and the brass accent.
-- **Gate:** `lint.mjs` 0 FAIL; `inspect.mjs` (1440/768/390) **0 FAIL** on all 26 public routes across `/en` + `/zh-hant` (home, about, product, solutions ×2, resources, an article, contact, security, privacy, terms, demo, pricing) and on the 5 account pages per locale with `--allow few-pictures,no-footage` (working form pages; the atlas plate carries the brand — padding them with engravings would be ornament).
-- **Imagery (all credited in the footer):** *Hemelkaart met Christelijke sterrenbeelden* (Rijksmuseum, CC0, via Wikimedia Commons); *Theoria Veneris et Mercurii* orbit chart (Rijksmuseum, CC0); *Observatoire de Peking* copper engraving, 1736 (J. van der Spyk, public domain); *Starry sky with North Star circled* time-lapse (Thomas Bresson, CC BY 3.0); *Yale's Hartmann astrolabe* photograph (Ragesoss, CC BY-SA 3.0, set on a paper field with a multiply blend); *Victoria Harbour (Hong Kong)* photograph (Mk2010, CC BY-SA 3.0). Files in `public/assets/`, credits in `assets/credits.json`. The interface fragments are the product's own HTML, not screenshots.
+- **Type:** Geist Sans and Geist Mono via `next/font` (self-hosted, no external font requests); Chinese text falls back to PingFang TC, Microsoft JhengHei or Noto Sans TC.
+- **Colour:** a neutral zinc scale and one green accent (`#1f7a55`, `#4cbf8a` in dark mode). The public site follows the system light/dark setting; tokens live at the top of `src/app/globals.css` and are exposed to Tailwind as `ps-*` colours.
+- **Shape:** two radii only, 8px for controls and 14px for panels and images.
+- **Icons:** Phosphor (`@phosphor-icons/react`).
+- **Homepage:** split hero with the working demo question box (real answers and citations from `/api/demo/ask`), how it works, a four-cell feature grid built from real interface pieces, a Hong Kong/data-handling band, pricing summary, FAQ and a closing call to action.
+- **Interior pages** share `src/components/public/` (`PageHero`, `Section`, `AnswerCard`, `DocLayout`, `WorkflowPage`).
+- **Imagery:** *Victoria Harbour (Hong Kong)* photograph (Mk2010, CC BY-SA 3.0, via Wikimedia Commons), credited in the footer.

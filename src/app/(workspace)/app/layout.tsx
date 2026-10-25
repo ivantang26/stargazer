@@ -7,10 +7,12 @@ import { dict, htmlLang, type Locale } from "@/lib/i18n";
 import AppSidebar from "@/components/app-sidebar";
 import CreateWorkspace from "@/components/create-workspace";
 import type { Role } from "@/lib/db";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "Workspace — Stargazer",
+  title: "Workspace - Stargazer",
   robots: { index: false, follow: false },
 };
 
@@ -24,7 +26,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
   const orgId = activeOrgIdFor(user.id);
   if (!orgId) {
     return (
-      <html lang={htmlLang(locale)}>
+      <html lang={htmlLang(locale)} className={`${GeistSans.variable} ${GeistMono.variable}`}>
         <body className="min-h-screen bg-paper">
           <CreateWorkspace locale={locale} userName={user.name} />
         </body>
@@ -45,21 +47,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
     : t.app.team.roleMember;
 
   return (
-    <html lang={htmlLang(locale)}>
-      <head>
-        <link rel="preconnect" href="https://api.fontshare.com" />
-        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=erode@400,500,600&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang={htmlLang(locale)} className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="app-site min-h-screen bg-paper">
         <div className="flex min-h-screen flex-col lg:flex-row">
           <AppSidebar
@@ -77,7 +65,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
               workspaceLabel: t.app.sidebar.workspaceLabel,
               role: roleLabel,
             }}
-            orgName={org?.name ?? "—"}
+            orgName={org?.name ?? "-"}
             isStaff={user.isStaff}
           />
           <div className="min-w-0 flex-1 overflow-x-hidden">{children}</div>

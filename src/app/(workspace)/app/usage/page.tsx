@@ -51,7 +51,7 @@ export default async function UsagePage() {
           <div><dt className="text-ink-500">{u.used}</dt><dd className="font-semibold text-ink-900">{ent.used}</dd></div>
           <div><dt className="text-ink-500">{u.reserved}</dt><dd className="font-semibold text-ink-900">{ent.reserved}</dd></div>
           <div><dt className="text-ink-500">{u.remaining}</dt><dd className="font-semibold text-ink-900">{ent.remaining}</dd></div>
-          <div><dt className="text-ink-500">{u.resetDate}</dt><dd className="font-semibold text-ink-900">{ent.resetDate ? ent.resetDate.slice(0, 10) : "—"}</dd></div>
+          <div><dt className="text-ink-500">{u.resetDate}</dt><dd className="font-semibold text-ink-900">{ent.resetDate ? ent.resetDate.slice(0, 10) : "-"}</dd></div>
         </dl>
       </section>
 
@@ -86,7 +86,7 @@ export default async function UsagePage() {
                       {stateLabels[r.state] ?? r.state}
                     </span>
                   </td>
-                  <td className="py-2.5 pr-4 text-xs text-ink-500">{r.reason ?? "—"}</td>
+                  <td className="py-2.5 pr-4 text-xs text-ink-500">{r.reason ?? "-"}</td>
                   <td className="py-2.5 text-xs text-ink-500">{formatDateTime(r.created_at, locale)}</td>
                 </tr>
               ))}

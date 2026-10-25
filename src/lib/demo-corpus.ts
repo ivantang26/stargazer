@@ -339,7 +339,7 @@ export function seedDemoCorpus(db: Database): void {
         document_id: docId,
         version_id: versionId,
         seq: seq++,
-        content: `${doc.title} — ${section.heading}\n${section.text}`,
+        content: `${doc.title}: ${section.heading}\n${section.text}`,
         section: section.heading,
         loc_label: `${section.heading}`,
         created_at: now,
